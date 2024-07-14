@@ -1,33 +1,35 @@
-const { Sequelize, DataTypes } = require("sequelize");
-const sequelize = require("./index").sequelize;
+// src/models/videoModel.js
+const { DataTypes } = require("sequelize");
 
-const User = sequelize.define(
-  "Video",
-  {
-    filename: {
-      type: DataTypes.STRING,
-      allowNull: false,
+module.exports = (sequelize) => {
+  const Video = sequelize.define(
+    "Video",
+    {
+      filename: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      originalname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      path: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      duration: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      size: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
-    originalname: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    path: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    duration: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    size: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+    {
+      timestamps: true,
+    }
+  );
 
-module.exports = Video;
+  return Video;
+};

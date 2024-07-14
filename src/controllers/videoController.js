@@ -1,23 +1,19 @@
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const Video = require("../models/videoModel");
+const { Video } = require("../models"); // Correctly import Video model
 const {
   getVideoInfo,
   trimVideo,
   mergeVideos,
 } = require("../utils/ffmpegHelper");
 
-const test = (req, res) => {
-  res.status(200).send("Test successful");
-};
-
-//Set up storage engine for multer
+// Set up storage engine for multer
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: function (req, file, cb) {
     cb(null, "uploads/");
   },
-  filename: (req, file, cb) => {
+  filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
@@ -42,6 +38,7 @@ const upload = multer({
 const uploadVideo = (req, res) => {
   upload(req, res, async (err) => {
     if (err) {
+      console.error("Multer error:", err.message);
       return res.status(400).json({ error: err.message });
     }
 
@@ -61,6 +58,7 @@ const uploadVideo = (req, res) => {
       });
       res.status(201).json({ message: "Video uploaded successfully", video });
     } catch (error) {
+      console.error("Video processing error:", error);
       res.status(500).json({ error: "Failed to process video" });
     }
   });
@@ -94,6 +92,7 @@ const trimVideoController = async (req, res) => {
       .status(201)
       .json({ message: "Video trimmed successfully", trimmedVideo });
   } catch (error) {
+    console.error("Trim video error:", error);
     res.status(500).json({ error: "Failed to trim video" });
   }
 };
@@ -127,12 +126,12 @@ const mergeVideosController = async (req, res) => {
       .status(201)
       .json({ message: "Videos merged successfully", mergedVideo });
   } catch (error) {
+    console.error("Merge video error:", error);
     res.status(500).json({ error: "Failed to merge videos" });
   }
 };
 
 module.exports = {
-  test,
   uploadVideo,
   trimVideoController,
   mergeVideosController,

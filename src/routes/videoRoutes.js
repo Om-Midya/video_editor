@@ -6,20 +6,11 @@ const authMiddleware = require("../middlewares/authMiddleware");
 
 /**
  * @swagger
- * /videos/test:
- *   get:
- *     summary: Test route
- *     responses:
- *       200:
- *         description: Test successful
- */
-router.get("/test", videoController.test);
-
-/**
- * @swagger
  * /videos/upload:
  *   post:
  *     summary: Upload a video
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -43,6 +34,8 @@ router.post("/upload", authMiddleware, videoController.uploadVideo);
  * /videos/trim:
  *   post:
  *     summary: Trim a video
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -64,13 +57,15 @@ router.post("/upload", authMiddleware, videoController.uploadVideo);
  *       404:
  *         description: Video not found
  */
-router.post("/trim", authMiddleware, videoController.trimVideo);
+router.post("/trim", authMiddleware, videoController.trimVideoController);
 
 /**
  * @swagger
  * /videos/merge:
  *   post:
  *     summary: Merge videos
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -90,6 +85,6 @@ router.post("/trim", authMiddleware, videoController.trimVideo);
  *       404:
  *         description: One or more videos not found
  */
-router.post("/merge", authMiddleware, videoController.mergeVideos);
+router.post("/merge", authMiddleware, videoController.mergeVideosController);
 
 module.exports = router;

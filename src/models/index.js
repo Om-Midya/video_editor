@@ -7,4 +7,11 @@ const sequelize = new Sequelize({
   storage: process.env.DATABASE_URL || "./database.sqlite",
 });
 
-module.exports = { sequelize };
+const User = require("./userModel");
+const Video = require("./videoModel");
+
+module.exports = {
+  sequelize,
+  User,
+  Video,
+};

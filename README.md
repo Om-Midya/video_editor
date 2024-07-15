@@ -99,3 +99,8 @@ Here is a simple workflow diagram to understand the working of the API.
 
 - [Bilash Chandra Sarker](https://github.com/bilashcse/video-editor) for the FFmpeg video processing code, it helped me a lot to understand the working of FFmpeg.
 - Special thanks to the contributors of various npm packages and open-source projects that made this implementation possible.
+
+## Video Demo of API endpoints using SwaggerUI
+
+https://github.com/user-attachments/assets/d36774b7-175e-4da7-9c2b-75a7545845d6
+

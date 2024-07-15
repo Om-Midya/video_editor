@@ -43,11 +43,15 @@ SECRET_KEY=your_secret_key
 
 ### Running the server
 
+Before starting the server make sure to create a folder named `uploads` in the root directory to store the uploaded video files.
+
+````bash
+
 To start the server, run the following command
 
 ```bash
 node src/server.js
-```
+````
 
 The server will start on `http://localhost:3000`
 
@@ -74,6 +78,11 @@ Note: The test suite is currently failing as I am new to writing tests and still
 - Trim video files
 - Merge video files
 - Generate shareable links with expiration times
+
+## WorkFlow
+
+Here is a simple workflow diagram to understand the working of the API.
+![workflow image](workflow.jpeg)
 
 ## Assumptions and Choices Made
 

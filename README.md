@@ -43,15 +43,13 @@ SECRET_KEY=your_secret_key
 
 ### Running the server
 
-Before starting the server make sure to create a folder named `uploads` in the root directory to store the uploaded video files.
-
-````bash
+Before starting the server make sure to create a folder named `uploads` in the root directory to store the uploaded video files. And also do not forget to delete the `sqlite:.` folder from the root directory, before running the server.
 
 To start the server, run the following command
 
 ```bash
 node src/server.js
-````
+```
 
 The server will start on `http://localhost:3000`
 

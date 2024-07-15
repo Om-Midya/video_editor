@@ -8,7 +8,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
  * @swagger
  * /videos/upload:
  *   post:
- *     summary: Upload a video
+ *     summary: Upload a video for an authenticated user
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -33,7 +33,7 @@ router.post("/upload", authMiddleware, videoController.uploadVideo);
  * @swagger
  * /videos/trim:
  *   post:
- *     summary: Trim a video
+ *     summary: Trim a video for an authenticated user after choosing a video from the list of uploaded videos
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -63,7 +63,7 @@ router.post("/trim", authMiddleware, videoController.trimVideoController);
  * @swagger
  * /videos/merge:
  *   post:
- *     summary: Merge videos
+ *     summary: Merge videos alist of uploaded videos for an authenticated user
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -91,7 +91,7 @@ router.post("/merge", authMiddleware, videoController.mergeVideosController);
  * @swagger
  * /videos:
  *   get:
- *     summary: Get a list of uploaded videos
+ *     summary: Get a list of uploaded videos for an authenticated user
  *     security:
  *       - bearerAuth: []
  *     responses:

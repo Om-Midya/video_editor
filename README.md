@@ -84,7 +84,7 @@ Note: The test suite is currently failing as I am new to writing tests and still
 
 ### Choices Made
 
-1. **JWT for Authentication and protecting routes:**Used JWT for user authentication to secure the API endpoints.
+1. **JWT for Authentication and protecting routes:** Used JWT for user authentication to secure the API endpoints.
 2. **FFmpeg for Video Processing:** Leveraged FFmpeg for its powerful video processing capabilities. I took inspiration from [this code repo](https://github.com/bilashcse/video-editor) to understand the working of FFmpeg.
 3. **Swagger for API Documentation:** Integrated Swagger to provide an interactive API documentation and testing interface.
 

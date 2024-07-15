@@ -49,6 +49,15 @@ const uploadVideo = (req, res) => {
 
     try {
       const videoInfo = await getVideoInfo(file.path);
+      const duration = videoInfo.format.duration;
+
+      if (duration > 120) {
+        fs.unlinkSync(file.path);
+        return res
+          .status(400)
+          .json({ error: "Video duration exceeds 2 minutes" });
+      }
+
       const video = await Video.create({
         filename: file.filename,
         originalname: file.originalname,

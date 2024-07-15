@@ -13,6 +13,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//Serve static files in uploads folder
+app.use("/videos", express.static("uploads"));
+
 // Swagger documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 

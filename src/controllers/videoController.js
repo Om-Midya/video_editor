@@ -131,8 +131,28 @@ const mergeVideosController = async (req, res) => {
   }
 };
 
+const listVideos = async (req, res) => {
+  try {
+    const videos = await Video.findAll();
+    const videoList = videos.map((video) => ({
+      id: video.id,
+      filename: video.filename,
+      originalname: video.originalname,
+      path: video.path,
+      duration: video.duration,
+      size: video.size,
+      url: `${req.protocol}://${req.get("host")}/videos/${video.filename}`,
+    }));
+    res.status(200).json(videoList);
+  } catch (error) {
+    console.error("Failed to retrieve videos:", error);
+    res.status(500).json({ error: "Failed to retrieve videos" });
+  }
+};
+
 module.exports = {
   uploadVideo,
   trimVideoController,
   mergeVideosController,
+  listVideos,
 };

@@ -87,4 +87,38 @@ router.post("/trim", authMiddleware, videoController.trimVideoController);
  */
 router.post("/merge", authMiddleware, videoController.mergeVideosController);
 
+/**
+ * @swagger
+ * /videos:
+ *   get:
+ *     summary: Get a list of uploaded videos
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of uploaded videos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   filename:
+ *                     type: string
+ *                   originalname:
+ *                     type: string
+ *                   path:
+ *                     type: string
+ *                   duration:
+ *                     type: number
+ *                   size:
+ *                     type: integer
+ *                   url:
+ *                     type: string
+ */
+router.get("/", authMiddleware, videoController.listVideos);
+
 module.exports = router;

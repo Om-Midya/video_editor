@@ -121,4 +121,70 @@ router.post("/merge", authMiddleware, videoController.mergeVideosController);
  */
 router.get("/", authMiddleware, videoController.listVideos);
 
+/**
+ * @swagger
+ * /videos/share:
+ *   post:
+ *     summary: Generate a shareable link for a video with an expiry time
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               videoId:
+ *                 type: integer
+ *               expiryTime:
+ *                 type: integer
+ *                 description: Expiry time in seconds from now
+ *     responses:
+ *       200:
+ *         description: Shareable link generated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 link:
+ *                   type: string
+ */
+router.post("/share", authMiddleware, videoController.generateShareableLink);
+
+/**
+ * @swagger
+ * /videos/share/{filename}:
+ *   get:
+ *     summary: Access a shared video link
+ *     parameters:
+ *       - in: path
+ *         name: filename
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The video filename
+ *       - in: query
+ *         name: expiry
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Expiry timestamp
+ *       - in: query
+ *         name: signature
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Signature
+ *     responses:
+ *       200:
+ *         description: Video file
+ *       400:
+ *         description: Invalid link
+ *       410:
+ *         description: Link expired
+ */
+router.get("/share/:filename", videoController.accessSharedLink);
+
 module.exports = router;

@@ -1,5 +1,6 @@
 const multer = require("multer");
 const path = require("path");
+const crypto = require("crypto");
 const fs = require("fs");
 const { Video } = require("../models"); // Correctly import Video model
 const {
@@ -159,9 +160,76 @@ const listVideos = async (req, res) => {
   }
 };
 
+const generateShareableLink = async (req, res) => {
+  const { videoId, expiryTime } = req.body;
+
+  try {
+    const video = await Video.findByPk(videoId);
+    if (!video) {
+      return res.status(404).json({ error: "Video not found" });
+    }
+
+    const expiryTimestamp = Math.floor(Date.now() / 1000) + expiryTime;
+    const secret = process.env.SECRET_KEY || "your_secret_key";
+    const data = `${video.filename}:${expiryTimestamp}`;
+    const signature = crypto
+      .createHmac("sha256", secret)
+      .update(data)
+      .digest("hex");
+
+    const link = `${req.protocol}://${req.get("host")}/videos/share/${
+      video.filename
+    }?expiry=${expiryTimestamp}&signature=${signature}`;
+
+    res.status(200).json({ link });
+  } catch (error) {
+    console.error("Failed to generate shareable link:", error);
+    res.status(500).json({ error: "Failed to generate shareable link" });
+  }
+};
+
+const accessSharedLink = (req, res) => {
+  const { filename } = req.params;
+  const { expiry, signature } = req.query;
+
+  const secret = process.env.SECRET_KEY || "your_secret_key";
+  const data = `${filename}:${expiry}`;
+  const expectedSignature = crypto
+    .createHmac("sha256", secret)
+    .update(data)
+    .digest("hex");
+
+  console.log(`Received request to access shared link for file: ${filename}`);
+  console.log(`Expiry time: ${expiry}, Signature: ${signature}`);
+  console.log(`Expected Signature: ${expectedSignature}`);
+
+  if (signature !== expectedSignature) {
+    console.error("Invalid signature");
+    return res.status(400).json({ error: "Invalid link" });
+  }
+
+  if (Math.floor(Date.now() / 1000) > parseInt(expiry, 10)) {
+    console.error("Link expired");
+    return res.status(410).json({ error: "Link expired" });
+  }
+
+  const filePath = path.join(__dirname, "..", "..", "uploads", filename);
+  console.log(`File path: ${filePath}`);
+
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error("Error sending file:", err);
+      return res.status(500).json({ error: "Failed to send file" });
+    }
+    console.log("File sent successfully");
+  });
+};
+
 module.exports = {
   uploadVideo,
+  listVideos,
+  generateShareableLink,
+  accessSharedLink,
   trimVideoController,
   mergeVideosController,
-  listVideos,
 };
